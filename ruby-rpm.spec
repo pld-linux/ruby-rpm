@@ -3,14 +3,14 @@ Name:		ruby-rpm
 Version:	1.2.3
 Release:	0.1
 License:	GPL
-Group:		Development/Libraries
+Group:		Development/Languages
 URL:		http://rubyforge.org/projects/ruby-rpm/
 Source0:	http://rubyforge.org/frs/download.php/26403/%{name}-%{version}.tgz
 # Source0-md5:	a8be5d9582d964659802e0118f02e690
 Patch1:		%{name}-doc.patch
 Patch2:		%{name}-ia64.patch
 Patch3:		%{name}-extconf-db46.patch
-Patch4:		ruby-rpm-compat.patch
+Patch4:		%{name}-compat.patch
 BuildRequires:	db-devel
 BuildRequires:	popt-devel >= 1.9.1
 BuildRequires:	rpm-devel
