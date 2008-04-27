@@ -1,0 +1,47 @@
+--- ruby-rpm-1.2.3/ext/rpm/private.h	2007-03-22 00:36:20.000000000 +0200
++++ ruby-rpm-1.2.3.patched/ext/rpm/private.h	2008-04-27 23:53:38.612228058 +0300
+@@ -20,6 +20,10 @@
+ #include <unistd.h>
+ #include <st.h>
+ 
++#define _RPMDB_INTERNAL
++#define _RPMPS_INTERNAL
++#define _RPMEVR_INTERNAL
++
+ #include <rpmcli.h>
+ #include <rpmlib.h>
+ #include <rpmdb.h>
+--- ruby-rpm-1.2.3/ext/rpm/rpm.c	2007-03-22 00:36:20.000000000 +0200
++++ ruby-rpm-1.2.3.patched/ext/rpm/rpm.c	2008-04-27 23:56:48.471155221 +0300
+@@ -500,7 +500,9 @@
+ 	DEF_TRANS_FLAG(PKGUNDO);
+ 	DEF_TRANS_FLAG(COMMIT);
+ 	DEF_TRANS_FLAG(UNDO);
++#ifdef RPMTRANS_FLAG_REVERSE
+ 	DEF_TRANS_FLAG(REVERSE);
++#endif
+ 	DEF_TRANS_FLAG(NOTRIGGERPREIN);
+ 	DEF_TRANS_FLAG(NOPRE);
+ 	DEF_TRANS_FLAG(NOPOST);
+@@ -514,15 +516,21 @@
+ #if RPM_VERSION_CODE < RPM_VERSION(4,1,0)
+ 	DEF_TRANS_FLAG(CHAINSAW);
+ #else
++#ifdef RPMTRANS_FLAG_ANACONDA
+ 	DEF_TRANS_FLAG(ANACONDA);
+ #endif
++#endif
+ /* NOMD5 is not in jbj's 4.4.6 any more - Mandriva uses that */
+ #ifdef RPMTRANS_FLAG_NOMD5
+ 	DEF_TRANS_FLAG(NOMD5);
+ #endif
+ #if RPM_VERSION(4,1,0) <= RPM_VERSION_CODE
++#ifdef RPMTRANS_FLAG_NOSUGGEST
+ 	DEF_TRANS_FLAG(NOSUGGEST);
++#endif
++#ifdef RPMTRANS_FLAG_ADDINDEPS
+ 	DEF_TRANS_FLAG(ADDINDEPS);
++#endif
+ 	DEF_TRANS_FLAG(NOCONFIGS);
+ #endif
+ #undef DEF_TRANS_FLAG

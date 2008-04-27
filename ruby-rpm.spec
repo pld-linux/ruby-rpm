@@ -8,8 +8,9 @@ URL:		http://rubyforge.org/projects/ruby-rpm/
 Source0:	http://rubyforge.org/frs/download.php/26403/%{name}-%{version}.tgz
 # Source0-md5:	a8be5d9582d964659802e0118f02e690
 Patch1:		%{name}-doc.patch
-Patch3:		%{name}-ia64.patch
-Patch4:		%{name}-extconf-db46.patch
+Patch2:		%{name}-ia64.patch
+Patch3:		%{name}-extconf-db46.patch
+Patch4:		ruby-rpm-compat.patch
 BuildRequires:	db-devel
 BuildRequires:	popt-devel >= 1.9.1
 BuildRequires:	rpm-devel
@@ -24,8 +25,9 @@ Ruby/RPM is an interface to access RPM database for Ruby.
 %setup -q
 %patch1 -p1
 %ifarch ia64
-%patch3 -p1
+%patch2 -p1
 %endif
+%patch3 -p1
 %patch4 -p1
 
 %build
