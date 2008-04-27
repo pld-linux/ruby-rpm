@@ -1,0 +1,23 @@
+diff -ur ruby-rpm-1.2.0/doc/refm.rd.ja ruby-rpm-1.2.0-fix/doc/refm.rd.ja
+--- ruby-rpm-1.2.0/doc/refm.rd.ja	2004-05-29 19:14:20.000000000 +0900
++++ ruby-rpm-1.2.0-fix/doc/refm.rd.ja	2004-11-01 08:29:40.292130352 +0900
+@@ -562,7 +562,7 @@
+ 
+     依存フラグを返す。
+ 
+---- RPM::Dependency#target
++--- RPM::Dependency#owner
+ 
+     依存しているオブジェクト (((<Package|RPM::Package>)) や
+     ((<Spec|RPM::Spec>)) 等) を返す。
+@@ -590,6 +590,9 @@
+ --- RPM::Dependency#satisfy?(ver)
+ 
+     ((|ver|)) がこの Dependency を満たす場合に (({true})) を返す。
++    ((|ver|)) が Package のときは package.provides を全て満たさなければならない。
++    ((|ver|)) が Dependency のときは version, flags を比較する。
++    ((|ver|)) が Version のときは version を比較する。
+ 
+ == RPM::Provide
+ 
+
