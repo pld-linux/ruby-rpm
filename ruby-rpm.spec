@@ -51,6 +51,7 @@ ruby install.rb install
 #install ext/rpm/ruby-rpm.h $RPM_BUILD_ROOT%{ruby_sitearchdir}
 
 %clean
+rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
