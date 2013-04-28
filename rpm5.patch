@@ -1,0 +1,11 @@
+--- rpm-1.3.1/ext/rpm/rpm.c~	2013-04-28 03:28:24.000000000 +0300
++++ rpm-1.3.1/ext/rpm/rpm.c	2013-04-28 03:29:21.883894136 +0300
+@@ -243,7 +243,7 @@
+ #define DEFINE_DBI(name) \
+ 	rb_define_const(rpm_mRPM, "DBI_"#name, INT2NUM(RPMDBI_##name))
+ 	DEFINE_DBI(PACKAGES);
+-	DEFINE_DBI(DEPENDS);
++//	DEFINE_DBI(DEPENDS);
+ 	DEFINE_DBI(LABEL);
+ 	DEFINE_DBI(ADDED);
+ 	DEFINE_DBI(REMOVED);

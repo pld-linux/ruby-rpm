@@ -1,61 +1,58 @@
+%define pkgname rpm
 Summary:	An interface to access RPM database for Ruby
-Name:		ruby-rpm
-Version:	1.2.3
-Release:	0.1
-License:	GPL
+Name:		ruby-%{pkgname}
+Version:	1.3.1
+Release:	1
+License:	GPL v2
 Group:		Development/Languages
-URL:		http://rubyforge.org/projects/ruby-rpm/
-Source0:	http://rubyforge.org/frs/download.php/26403/%{name}-%{version}.tgz
-# Source0-md5:	a8be5d9582d964659802e0118f02e690
-Patch1:		%{name}-doc.patch
-Patch2:		%{name}-ia64.patch
-Patch3:		%{name}-extconf-db46.patch
-Patch4:		%{name}-compat.patch
-BuildRequires:	db-devel
-BuildRequires:	popt-devel >= 1.9.1
+Source0:	http://rubygems.org/downloads/ruby-rpm-%{version}.gem
+# Source0-md5:	f62501746a7f13399c4d9dab917d0ee4
+Patch0:		ruby-deprecated.patch
+Patch1:		rpm5.patch
+URL:		http://gitorious.org/ruby-rpm
 BuildRequires:	rpm-devel
-BuildRequires:	ruby >= 1.8.6
+BuildRequires:	rpm-rubyprov
+BuildRequires:	rpmbuild(macros) >= 1.656
 BuildRequires:	ruby-devel >= 1.8.6
+%if %{with tests}
+BuildRequires:	ruby-rake-compiler >= 0.7
+BuildRequires:	ruby-rdiscount >= 1.6
+BuildRequires:	ruby-rdoc >= 3.9
+%endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Ruby/RPM is an interface to access RPM database for Ruby.
+Provides bindings for accessing RPM packages and databases from Ruby.
+It includes the low-level C API to talk to rpm as well as Ruby classes
+to model the various objects that RPM deals with (such as packages,
+dependencies, and files).
 
 %prep
-%setup -q
+%setup -q -n %{pkgname}-%{version}
+%patch0 -p1
 %patch1 -p1
-%ifarch ia64
-%patch2 -p1
-%endif
-%patch3 -p1
-%patch4 -p1
 
 %build
-ruby install.rb config \
-	--bin-dir=%{_bindir} \
-	--rb-dir=%{ruby_sitelibdir} \
-	--so-dir=%{ruby_sitearchdir} \
-	--data-dir=%{_datadir}
-
-ruby install.rb setup
+cd ext/%{pkgname}
+ruby extconf.rb
+%{__make} V=1 \
+	CC="%{__cc}" \
+	cppflags=-I/usr/include/rpm \
+	LDFLAGS="%{rpmldflags}" \
+	CFLAGS="%{rpmcflags} -fPIC"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-ruby install.rb config \
-    --bin-dir=$RPM_BUILD_ROOT%{_bindir} \
-    --rb-dir=$RPM_BUILD_ROOT%{ruby_sitelibdir} \
-    --so-dir=$RPM_BUILD_ROOT%{ruby_sitearchdir} \
-    --data-dir=$RPM_BUILD_ROOT%{_datadir}
-ruby install.rb install
-
-#install ext/rpm/ruby-rpm.h $RPM_BUILD_ROOT%{ruby_sitearchdir}
+install -d $RPM_BUILD_ROOT{%{ruby_vendorlibdir},%{ruby_vendorarchdir}}
+cp -a lib/* $RPM_BUILD_ROOT%{ruby_vendorlibdir}
+install -p ext/%{pkgname}/%{pkgname}.so $RPM_BUILD_ROOT%{ruby_vendorarchdir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README COPYING ChangeLog doc
-%{ruby_sitelibdir}/rpm.rb
-%attr(755,root,root) %{ruby_sitearchdir}/rpmmodule.so
-#%{ruby_sitearchdir}/ruby-rpm.h
+%doc README.rdoc CHANGELOG.rdoc
+%{ruby_vendorlibdir}/rpm.rb
+%{ruby_vendorlibdir}/rpm
+%attr(755,root,root) %{ruby_vendorarchdir}/rpm.so
