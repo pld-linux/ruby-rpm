@@ -2,7 +2,7 @@
 Summary:	An interface to access RPM database for Ruby
 Name:		ruby-%{pkgname}
 Version:	1.3.1
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Languages
 Source0:	http://rubygems.org/downloads/ruby-rpm-%{version}.gem
