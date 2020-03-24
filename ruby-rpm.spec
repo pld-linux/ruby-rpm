@@ -2,7 +2,7 @@
 Summary:	An interface to access RPM database for Ruby
 Name:		ruby-%{pkgname}
 Version:	1.3.1
-Release:	6
+Release:	7
 License:	GPL v2
 Group:		Development/Languages
 Source0:	http://rubygems.org/downloads/ruby-rpm-%{version}.gem
@@ -39,7 +39,7 @@ ruby extconf.rb
 	CC="%{__cc}" \
 	cppflags=-I/usr/include/rpm \
 	LDFLAGS="%{rpmldflags}" \
-	CFLAGS="%{rpmcflags} -fPIC"
+	CFLAGS="%{rpmcflags} -fPIC -D_GNU_SOURCE"
 
 %install
 rm -rf $RPM_BUILD_ROOT
