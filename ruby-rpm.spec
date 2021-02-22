@@ -1,8 +1,12 @@
+#
+# Conditional build:
+%bcond_with	rpm5	# build with rpm5
+
 %define pkgname rpm
 Summary:	An interface to access RPM database for Ruby
 Name:		ruby-%{pkgname}
 Version:	1.3.1
-Release:	7
+Release:	9
 License:	GPL v2
 Group:		Development/Languages
 Source0:	http://rubygems.org/downloads/ruby-rpm-%{version}.gem
@@ -30,7 +34,7 @@ dependencies, and files).
 %prep
 %setup -q -n %{pkgname}-%{version}
 %patch0 -p1
-%patch1 -p1
+%{?with_rpm5:%patch1 -p1}
 
 %build
 cd ext/%{pkgname}
