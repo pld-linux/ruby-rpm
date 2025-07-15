@@ -33,7 +33,7 @@ dependencies, and files).
 
 %prep
 %setup -q -n %{pkgname}-%{version}
-%patch0 -p1
+%patch -P0 -p1
 %{?with_rpm5:%patch1 -p1}
 
 %build
